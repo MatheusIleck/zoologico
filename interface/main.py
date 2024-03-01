@@ -1,10 +1,11 @@
 import sys
+import tkinter
+
 sys.path.append('./db_zoo/')
 
 import database
 import customtkinter as ctk
-from PIL import Image
-from tkinter import messagebox
+from PIL import Image, ImageTk, ImageFilter
 
 class subnivel(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
@@ -49,48 +50,87 @@ class App(ctk.CTk):
         self.botao_login.pack()
 
     def janela_administrador(self):
+        #configurações da janela do administrador
         janela_admin = subnivel(self)
+        janela_admin.rowconfigure((0,1), weight=1)
+        janela_admin.columnconfigure((0,1,2,3), weight=1)
 
-        # Componentes da barra de menu
-        barra_menu = ctk.CTkFrame(master=janela_admin, height=900, corner_radius=0, bg_color='#9FB79F')
-        barra_menu.grid(row=0, column=0, columnspan=4, sticky='ew')
+        # Componentes da tela de administrador
 
-        
-        icone_funcionario = ctk.CTkImage(light_image=Image.open('./imagens/icone_funcionario.png'), size=(40, 40))
-        botao_funcionario = ctk.CTkButton(barra_menu, image=icone_funcionario, text='Funcionário', compound='left', corner_radius=0, width=480, height=100, fg_color='#9FB79F', text_color='#0B724C', font=('Poppins', 20, 'bold'), hover_color='#9FB79F')
-        botao_funcionario.grid(row=0, column=0)
-
-        icone_ambiente = ctk.CTkImage(light_image=Image.open('./imagens/teste.png'))
-        botao_ambiente = ctk.CTkButton(barra_menu, image=icone_ambiente, text='Ambiente', compound='left', corner_radius=0, width=480, height=100, fg_color='#9FB79F', text_color='#0B724C', font=('Poppins', 20, 'bold'), hover_color='#9FB79F')
-        botao_ambiente.grid(row=0, column=1)
-
-        icone_estoque = ctk.CTkImage(light_image=Image.open('./imagens/teste.png'))
-        botao_estoque = ctk.CTkButton(barra_menu, image=icone_estoque, text='Estoque', compound='left', corner_radius=0, width=480, height=100, fg_color='#9FB79F', text_color='#0B724C', font=('Poppins', 20, 'bold'), hover_color='#9FB79F')
-        botao_estoque.grid(row=0, column=2)
-        
-        icone_sair = ctk.CTkImage(light_image=Image.open('./imagens/teste.png'))
-        botao_sair = ctk.CTkButton(barra_menu, image=icone_sair, text='Sair', compound='left', corner_radius=0, width=480, height=100, fg_color='#9FB79F', text_color='#0B724C', font=('Poppins', 20, 'bold'), hover_color='#9FB79F')
-        botao_sair.grid(row=0, column=3)
-
-        barra_tela_principal = ctk.CTkFrame(master=janela_admin, height=900, corner_radius=0)
-        barra_tela_principal.grid(row=1, column=0, columnspan=4, sticky='ew')
-        
-        esquerda_barra_menu = ctk.CTkFrame(master=barra_tela_principal,corner_radius=0, height=900)
-        esquerda_barra_menu.grid(row=1,column=0)
-
-        #componentes da janela administrador
-        foto_funcionario = ctk.CTkImage(light_image=Image.open('./imagens/eu.png'), size=(280, 280))
-        base_foto = ctk.CTkLabel(esquerda_barra_menu, height= 200, width=640, image=foto_funcionario, text=None, bg_color='#fff')
-        base_foto.grid(row=0, column=0, padx=0, pady=0, columnspan=2)
+        #configuração da barra menu no topo
+        barra_menu = ctk.CTkFrame(master=janela_admin, height=150, corner_radius=0, fg_color='#9FB79F')
+        barra_menu.grid(row=0, columnspan=4, column=0, sticky='ew')
+        barra_menu.columnconfigure((0,1,2,3), weight=1)
+        barra_menu.rowconfigure(0, weight=1, minsize=150)
     
+        #botao funcionario
+        icone_funcionario = ctk.CTkImage(light_image=Image.open('./imagens/icone_funcionario.png'), size=(80, 80))
+        botao_funcionario = ctk.CTkButton(barra_menu, image=icone_funcionario, text='Funcionário', compound='left', height=150, border_spacing=5, corner_radius=0, fg_color='transparent',hover_color='#076E48', font=('Poppins',20,'bold'))
+        botao_funcionario.grid(row=0, column=0, sticky='ew')
+
+        #botão ambiente
+        icone_ambiente = ctk.CTkImage(light_image=Image.open('./imagens/teste.png'), size=(80, 80))
+        botao_ambiente = ctk.CTkButton(barra_menu, image=icone_ambiente, text='Ambiente', compound='left', height=150, border_spacing=5, corner_radius=0, fg_color='transparent',hover_color='#076E48', font=('Poppins',20,'bold'))
+        botao_ambiente.grid(row=0, column=1, sticky='ew')
+
+        #botão do estoque
+        icone_estoque = ctk.CTkImage(light_image=Image.open('./imagens/teste.png'), size=(80, 80))
+        botao_estoque = ctk.CTkButton(barra_menu, image=icone_estoque, text='Estoque', compound='left', height=150, border_spacing=5, corner_radius=0, fg_color='transparent',hover_color='#076E48', font=('Poppins',20,'bold'))
+        botao_estoque.grid(row=0, column=2, sticky='ew')
+
+        #botão sair
+        icone_sair = ctk.CTkImage(light_image=Image.open('./imagens/teste.png'), size=(80, 80))
+        botao_sair = ctk.CTkButton(barra_menu, image=icone_sair, text='Sair', compound='left', height=150, border_spacing=5, corner_radius=0, fg_color='transparent',hover_color='#076E48', font=('Poppins',20,'bold'))
+        botao_sair.grid(row=0, column=3, sticky='ew')
+        
+        #frame do meio da tela
+        barra_tela_principal = ctk.CTkFrame(master=janela_admin, height=900, corner_radius=0, fg_color='#fff')
+        barra_tela_principal.grid(row=1, column=0, columnspan=4, sticky='ew')
+        barra_tela_principal.columnconfigure((0,1,2,3), weight=1)
+        barra_tela_principal.rowconfigure(0, weight=1, minsize=900)
+
+        #foto
+        foto = tkinter.Canvas(barra_tela_principal, width=200, height=200, bg="black", highlightthickness=0)
+
+        imagem = Image.open('./imagens/eu.png')
+        imagem_redimensionada = imagem.resize((150, 150), Image.LANCZOS)
+        img = ImageTk.PhotoImage(imagem_redimensionada)
+        foto.image = img  # Mantenha uma referência à imagem
+        foto.create_oval(0, 0, 150, 150, fill="white", outline="green", width=6)
+        foto.create_image(0,0, anchor=tkinter.NW, image=img)
+     
+        foto.grid(row=0, column=0)
+
+        ''' #foto do administrador
+        foto_administrador = ctk.CTkImage(Image.open('./imagens/eu.png'),size=(200,200))
+        foto = ctk.CTkLabel(barra_tela_principal, image=foto_administrador, text="", fg_color='transparent')
+        foto.grid(row=0, column=0, columnspan=2)
+        '''
+        
+        
+        
         '''
 
-        
-        texto = ctk.CTkLabel(barra_tela_principal, text='DALE', bg_color='blue', font=('Arial', 12))
-        texto.grid(row=1, column=1, padx=10, pady=10)
+       
 
-        texto2 = ctk.CTkLabel(barra_tela_principal, text='dele', bg_color='blue', font=('Arial', 12))
-        texto2.grid(row=2, column=2, padx=10, pady=10)'''   
+        
+        
+        
+
+        esquerda_barra_menu = ctk.CTkFrame(master=barra_tela_principal,corner_radius=0, height=900, border_width=10)
+        esquerda_barra_menu.grid(row=0,column=0, pady=5,padx=5)
+
+        meio_barra_menu = ctk.CTkFrame(master=barra_tela_principal, corner_radius=0, height=900, border_width=5)
+        meio_barra_menu.grid(row=0, column=1)
+       
+        direita_barra_menu = ctk.CTkFrame(master=barra_tela_principal, corner_radius=0, height=900, border_width=5)
+        direita_barra_menu.grid(row=0, column=2)
+
+        #componentes da janela administrador
+        
+    '''
+
+        
 
 
     def logando(self):
@@ -101,11 +141,11 @@ class App(ctk.CTk):
             database.cursor.execute("SELECT * FROM users WHERE (Cpf=? and Senha=?)", (login, senha))
             result = database.cursor.fetchone()
             if result:
-                messagebox.showinfo('Login', 'Bem vindo!')
+                tkinter.messagebox.showinfo('Login', 'Bem vindo!')
                 self.withdraw()
                 self.janela_administrador()  # Abre a janela de administrador
             else:
-                messagebox.showinfo('Falha', 'Credenciais inválidas')
+                tkinter.messagebox.showinfo('Falha', 'Credenciais inválidas')
 
 
 zoologico = App()
